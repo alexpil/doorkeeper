@@ -4,7 +4,7 @@ class CreateDoorkeeperTables < ActiveRecord::Migration<%= migration_version %>
       t.string  :name,         null: false
       t.string  :uid,          null: false
       t.string  :secret,       null: false
-      t.text    :redirect_uri, null: false
+      t.text    :redirect_uri  # Add `null: false` if you are planning to use authorization_code or implicit grant flows
       t.string  :scopes,       null: false, default: ''
       t.boolean :confidential, null: false, default: true
       t.timestamps             null: false

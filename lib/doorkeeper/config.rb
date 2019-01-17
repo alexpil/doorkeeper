@@ -397,6 +397,11 @@ module Doorkeeper
       @token_grant_types ||= calculate_token_grant_types.freeze
     end
 
+    def allow_blank_redirect_uri?
+      grant_flows.exclude?('authorization_code') &&
+        grant_flows.exclude?('implicit')
+    end
+
     private
 
     # Helper to read boolearized configuration option
