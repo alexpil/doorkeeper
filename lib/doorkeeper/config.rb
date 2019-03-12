@@ -119,6 +119,13 @@ module Doorkeeper
         )
       end
 
+      def grant_flows(set_grant_flows, &block)
+        @config.instance_variable_set(
+          :@grant_flows,
+          block || set_grant_flows
+        )
+      end
+
       # Reuse access token for the same resource owner within an application
       # (disabled by default)
       # Rationale: https://github.com/doorkeeper-gem/doorkeeper/issues/383
@@ -278,7 +285,7 @@ module Doorkeeper
     option :orm,                            default: :active_record
     option :native_redirect_uri,            default: 'urn:ietf:wg:oauth:2.0:oob'
     option :active_record_options,          default: {}
-    option :grant_flows,                    default: %w[authorization_code client_credentials]
+    # option :grant_flows,                    default: ->(_context) { %w[authorization_code client_credentials] }
     option :handle_auth_errors,             default: :render
 
     # Allows to forbid specific Application redirect URI's by custom rules.
@@ -419,6 +426,10 @@ module Doorkeeper
 
     def authorization_response_types
       @authorization_response_types ||= calculate_authorization_response_types.freeze
+    end
+
+    def grant_flows
+      @grant_flows ||= %w[authorization_code client_credentials]
     end
 
     def token_grant_types
