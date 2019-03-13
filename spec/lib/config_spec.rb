@@ -394,6 +394,15 @@ describe Doorkeeper, 'configuration' do
       expect(subject.grant_flows).to eq %w[authorization_code implicit]
     end
 
+    it "accepts block as input" do
+      Doorkeeper.configure do
+        orm DOORKEEPER_ORM
+        grant_flows { |_context| ["authorization_code"] }
+      end
+
+      expect(subject.grant_flows).to eq %w[authorization_code]
+    end
+
     context "when including 'authorization_code'" do
       before do
         Doorkeeper.configure do

@@ -119,11 +119,9 @@ module Doorkeeper
         )
       end
 
-      def grant_flows(set_grant_flows, &block)
-        @config.instance_variable_set(
-          :@grant_flows,
-          block || set_grant_flows
-        )
+      def grant_flows(set_grant_flows = %w[authorization_code client_credentials], &block)
+        value = block_given? ? block.call : set_grant_flows
+        @config.instance_variable_set(:@grant_flows, value)
       end
 
       # Reuse access token for the same resource owner within an application
